@@ -1,0 +1,9 @@
+note over browser, server: GET Request
+browser-->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server-->browser: HTML code, with CSS and JS link in <head>
+browser-->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+browser-->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: JS code main.js
+server-->browser: CSS code main.css
+browser-->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: JSON object
