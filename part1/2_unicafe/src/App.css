@@ -1,0 +1,17 @@
+* {
+  box-sizing: border-box;
+}
+
+.App {
+  padding: 1rem 3rem;
+}
+
+button {
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+td {
+  min-width: 5rem;
+}
