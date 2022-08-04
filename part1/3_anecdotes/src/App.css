@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+  margin: 1rem 0;
+}
+
+.App {
+  padding: 1rem 3rem;
+}
+
+button {
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+blockquote {
+  position: relative;
+  width: fit-content;
+  margin: 1rem 15px;
+}
+
+blockquote::before,
+blockquote::after {
+  content: '"';
+  position: absolute;
+  font-size: 20pt;
+  font-family: serif;
+  top: -5px;
+}
+
+blockquote::before {
+  left: -15px;
+}
+
+blockquote::after {
+  right: -15px;
+}
