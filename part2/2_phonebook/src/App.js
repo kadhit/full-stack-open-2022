@@ -7,14 +7,16 @@ import OutputForm from "./components/OutputForm";
 import "./App.css";
 
 const App = () => {
+  // useState
+  const [newName, setNewName] = useState("");
+  const [newPhone, setNewPhone] = useState("");
+  const [filterQuery, setFilterQuery] = useState("");
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", phone: "012-345-6789", id: 1 },
     { name: "Ada Lovelace", phone: "012-345-6789", id: 2 },
   ]);
-  const [newName, setNewName] = useState("");
-  const [newPhone, setNewPhone] = useState("");
-  const [filterQuery, setFilterQuery] = useState("");
 
+  // Handler Functions
   const handleSubmit = (event) => {
     event.preventDefault();
     const copyName = newName
