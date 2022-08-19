@@ -9,8 +9,17 @@
 button {
   margin: 1rem;
   margin-left: 0;
-  padding: 0.25rem 1rem;
+  padding: 0.5rem 1.5rem;
   cursor: pointer;
+  background-color: grey;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.delete {
+  margin: 0;
+  background-color: red;
 }
 
 td {
