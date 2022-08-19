@@ -4,6 +4,7 @@ import { phonebook } from './services/phonebook';
 import FilterForm from './components/FilterForm';
 import InputForm from './components/InputForm';
 import OutputForm from './components/OutputForm';
+import Notification from './components/Notification';
 
 import './App.css';
 
@@ -12,6 +13,8 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newPhone, setNewPhone] = useState('');
   const [filterQuery, setFilterQuery] = useState('');
+  const [message, setMessage] = useState(null);
+  const [style, setStyle] = useState({});
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', phone: '012-345-6789', id: 1 },
     { name: 'Ada Lovelace', phone: '012-345-6789', id: 2 },
@@ -19,7 +22,20 @@ const App = () => {
 
   // useEffect
   useEffect(() => {
-    phonebook.getAll().then((initialData) => setPersons(initialData));
+    // Axios GET
+    phonebook
+      .getAll()
+      .then((initialData) => setPersons(initialData))
+      .catch((error) => {
+        console.log(error.message);
+        setMessage('Something went wrong');
+        setStyle({ backgroundColor: 'red' });
+        // Please use 3000 for all setTimeout
+        setTimeout(() => {
+          setMessage(null);
+          setStyle({});
+        }, 3000);
+      });
   }, []);
 
   // Handler Functions
@@ -46,32 +62,68 @@ const App = () => {
       ) {
         const person = persons.find((item) => item.name === copyName);
 
+        //Axios PUT
         phonebook
           .updateUser(person.id, {
             ...person,
             name: copyName,
             phone: copyPhone,
           })
-          .then((updatedObject) =>
+          .then((updatedObject) => {
             setPersons(
               persons.map((item) =>
                 item.id === person.id ? updatedObject : item
               )
-            )
-          );
+            );
+            setMessage(`${updatedObject.name} is successfully updated`);
+            setStyle({ backgroundColor: 'green' });
+            // Please use 3000 for all setTimeout
+            setTimeout(() => {
+              setMessage(null);
+              setStyle({});
+            }, 3000);
+          })
+          .catch((error) => {
+            console.log(error.message);
+            setMessage(
+              `Information of ${person.name} has already been removed from the server`
+            );
+            setStyle({ backgroundColor: 'red' });
+            // Please use 3000 for all setTimeout
+            setTimeout(() => {
+              setMessage(null);
+              setStyle({});
+            }, 3000);
+          });
       }
     } else {
+      //Axios POST
       phonebook
         .createUser({
           name: copyName,
           phone: copyPhone,
           id: persons[persons.length - 1].id + 1,
         })
-        .then((updatedObject) => setPersons(persons.concat(updatedObject)));
-      // setPersons([
-      //   ...persons,
-      //   { name: copyName, phone: copyPhone, id: persons.length + 1 },
-      // ]);
+        .then((updatedObject) => {
+          setPersons(persons.concat(updatedObject));
+          setMessage(`${updatedObject.name} is successfully added`);
+          setStyle({ backgroundColor: 'green' });
+          // Please use 3000 for all setTimeout
+          setTimeout(() => {
+            setMessage(null);
+            setStyle({});
+          }, 3000);
+        })
+        .catch((error) => {
+          console.log(error.message);
+          setMessage('Something went wrong');
+          setStyle({ backgroundColor: 'red' });
+          // Please use 3000 for all setTimeout
+          setTimeout(() => {
+            setMessage(null);
+            setStyle({});
+          }, 3000);
+        });
     }
 
     console.log('submit', copyName);
@@ -81,9 +133,31 @@ const App = () => {
     event.preventDefault();
     const name = event.target.value;
     if (window.confirm(`Delete ${name}?`)) {
+      // Axios DELETE
       phonebook
         .deleteUser(persons.find((item) => item.name === name).id)
-        .then(() => setPersons(persons.map((item) => item.name !== name && item)));
+        .then(() => {
+          setPersons(persons.map((item) => item.name !== name && item));
+          setMessage(`${name} has been deleted`);
+          setStyle({ backgroundColor: 'rgb(0, 125, 250)' });
+          // Please use 3000 for all setTimeout
+          setTimeout(() => {
+            setMessage(null);
+            setStyle({});
+          }, 3000);
+        })
+        .catch((error) => {
+          console.log(error.message);
+          setMessage(
+            `Information of ${name} has already been removed from the server`
+          );
+          setStyle({ backgroundColor: 'red' });
+          // Please use 3000 for all setTimeout
+          setTimeout(() => {
+            setMessage(null);
+            setStyle({});
+          }, 3000);
+        });
     }
   };
 
@@ -109,6 +183,7 @@ const App = () => {
   return (
     <div className='App'>
       <h1>Phonebook</h1>
+      <Notification message={message} style={style} />
       <h3>Find person in phonebook</h3>
       <FilterForm
         filterQuery={filterQuery}
